@@ -46,6 +46,8 @@
 });
 </script>
 
+
+
 <div id="highChartContainer" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 <h2> Products in the market </h2>
@@ -63,8 +65,30 @@
       <tr>
         <td><%= product.id %></td>
       	<td><%= product.name %></td>
-      	<td>$<%= product.price %></td>
+      	<td data-product='<%= product.id %>'>$<%= product.price %></td>
       	<td><%= product.user.name if product.user.present? %></td>
+        <td><%= link_to "+", product_path(product), 
+            'data-incr-price' => product.id,  
+            :method           => :put %></td>
+        <script type='text/javascript'>
+            $('[data-incr-price]').on('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            url   = $(this).attr('href');
+            price = $(this).attr('data-price');
+            newPrice = parseInt(price) + 1;
+
+            $.ajax({ url:   url, 
+                     type: 'put',
+                     dataType: 'json',
+                     data: { product: {price: newPrice} }
+                   }).success(function(data, textStatus, jqXHR) { 
+                    $('[data-product='+ data.id +']').html("$" + data.price);
+                    $('[data-incr-price='+ data.id +']').attr('data-price', data.price);   
+              });
+            })
+        </script>
       </tr>
     <% end %>
   </tbody>
