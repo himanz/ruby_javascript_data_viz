@@ -2,6 +2,24 @@
   console.log('the number of products is ' + '<%= @products.count %>');
 </script>
 
+<a href="javascript:$('#highChartContainer').toggle()">Chart</a>
+
+<a href="#" class='closeChart'>Chart</a>
+
+<a href="#" data-hide-element='chart'>Chart</a>
+
+<script type='text/javascript'>
+  $('.closeChart').on('click', function(){
+      $('#highChartContainer').toggle()
+    });
+</script>
+
+<script type='text/javascript'>
+  $('[data-hide-element=chart]').on('click', function(){
+      $('#highChartContainer').toggle()
+    });
+</script>
+
 <script type='text/javascript'>
   $(document).ready(function(){
         chart = new Highcharts.Chart({
